@@ -80,22 +80,36 @@ length(unique(movies$title))
    There are 19 variables
 
 3. How many subjects?
-   There are 707 subjects, we tested for unique subjects but there were none so the same amount as obeservations,
+   There are 707 subjects, we tested for uniqueness and there were no duplicates.
 
 4. What consists of a subject?
-   every row is one movie and every movie is a subject
+   A subject is a single movie. Each row in the dataset represents one movie, described by variables such as: title, budget, revenue, runtime, genre.
 
 
 2. Which of the following types of variables are present in your data set? (i) nominal; (ii) ordinal; (iii); interval; (iv) ratio. If present, name one example of such a variable present in your data set. \textbf{[4 points]}
 
 ```{r}
-#WRITE YOUR CODE HERE
+table(movies$genre)
+table(movies$original_language)
+table(movies$first_actor_gender)
+table(movies$director_gender)
+
+class(movies$budget)
+summary(movies$budget)
+class(movies$runtime)
+summary(movies$runtime)
+class(movies$release_year)
 ```
 
 **Your Answer:**
 
-Write your response here.
+*i, There are nominal variables, for example the original language.
 
+*ii: There are no ordinal variables, since none of the categorical variables (e.g. genre, original_language, gender) have a meaningful rank order.
+
+*iii, There are interval variables, for exmaple the release dates.
+
+*iiii, there are ratio variables for example the runtime.
 
 3. A movie studio wants to know which types of movies give maximal profit. Perform the following steps to provide the movie studio with an analysis which corresponds to their request:
 
