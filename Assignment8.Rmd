@@ -210,13 +210,19 @@ c.  How trustworthy do you consider your conclusion to answer 2b? Use the term "
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
+install.packages("DescTools")
+library("DescTools")
+
+mode_value <- Mode(movies$first_actor, na.rm = TRUE)
+
+print(mode_value)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+Nicholas Cage
 
 *step b*
 
