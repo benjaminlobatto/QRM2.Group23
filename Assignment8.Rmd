@@ -380,7 +380,14 @@ d.  Write an advice to settle the argument between Bob and Chantal. \textbf{[4 p
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+# Create rounded vote average
+movies$vote_average_rounded <- floor(movies$vote_average)
+
+# Histogram
+hist(movies$vote_average_rounded,
+     main = "Distribution of Rounded Movie Ratings",
+     xlab = "Rounded Average Vote",
+     ylab = "Frequency")
 
 
 ```
@@ -392,7 +399,23 @@ Write your formulated response here.
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+movies$profits <- movies$revenue - movies$budget
+
+mean_profits <- aggregate(profits ~ vote_average_rounded,
+                          data = movies,
+                          FUN = mean,
+                          na.rm = TRUE)
+
+mean_profits
+
+plot(mean_profits$vote_average_rounded,
+     mean_profits$profits,
+     main = "Mean Profit by Movie Rating",
+     xlab = "Rounded Average Vote",
+     ylab = "Mean Profit",
+     pch = 19)
+
+mean_profits[which.max(mean_profits$profits), ]
 
 
 ```
@@ -404,7 +427,53 @@ Write your formulated response here.
 *step c*
 
 ```{r}
-#WRITE YOUR CODE HERE
+profit_summary <- aggregate(
+  profits ~ vote_average_rounded,
+  data = movies,
+  FUN = function(x) c(
+    mean = mean(x, na.rm = TRUE),
+    sd = sd(x, na.rm = TRUE),
+    n = sum(!is.na(x))
+  )
+)
+
+profit_summary <- data.frame(
+  vote_average_rounded = profit_summary$vote_average_rounded,
+  mean_profits = profit_summary$profits[, "mean"],
+  sd = profit_summary$profits[, "sd"],
+  n = profit_summary$profits[, "n"]
+)
+
+profit_summary$se <- profit_summary$sd / sqrt(profit_summary$n)
+
+profit_summary$t_critical <- qt(
+  0.975,
+  df = profit_summary$n - 1
+)
+
+profit_summary$lower_ci <- profit_summary$mean_profits -
+  profit_summary$t_critical * profit_summary$se
+
+profit_summary$upper_ci <- profit_summary$mean_profits +
+  profit_summary$t_critical * profit_summary$se
+
+plot(profit_summary$vote_average_rounded,
+     profit_summary$mean_profits,
+     main = "Mean Profit by Movie Rating with 95% Confidence Intervals",
+     xlab = "Rounded Average Vote",
+     ylab = "Mean Profit",
+     pch = 19,
+     ylim = range(c(profit_summary$lower_ci,
+                    profit_summary$upper_ci),
+                  na.rm = TRUE))
+
+arrows(x0 = profit_summary$vote_average_rounded,
+       y0 = profit_summary$lower_ci,
+       x1 = profit_summary$vote_average_rounded,
+       y1 = profit_summary$upper_ci,
+       angle = 90,
+       code = 3,
+       length = 0.05)
 
 
 ```
