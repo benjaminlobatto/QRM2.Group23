@@ -211,8 +211,7 @@ c.  How trustworthy do you consider your conclusion to answer 2b? Use the term "
 
 ```{r}
 
-install.packages("DescTools")
-library("DescTools")
+library(DescTools)
 
 mode_value <- Mode(movies$first_actor, na.rm = TRUE)
 
