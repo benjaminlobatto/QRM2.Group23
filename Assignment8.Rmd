@@ -125,73 +125,97 @@ For each step, you should provide first all the code you used to answer the ques
 
 ```{r}
 
-#WRITE YOUR CODE HERE
+movies$profits <- movies$revenue - movies$budget
+mean(movies$profits)
+median(movies$profits)
+max(movies$profits)
+min(movies$profits)
 
 ```
 
-**Your Answer:**
+Mean = 47019054
+Median = 49144
+Max = 1024888979
+Min = -150000000
 
-Write your formulated response here.
+
 
 *Step b*
 
 ```{r}
 
-#WRITE YOUR CODE HERE
+movies[which.max(movies$profits), c("title", "profits")]
+movies[which.min(movies$profits), c("title", "profits")]
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The film with the highest profit is *The Lord of the Rings: The Return of the King*, with a profit of $1,024,888,979. The film with the lowest profit is *The Wolfman*, with a loss of $150,000,000.
 
 *Step c*
 
 ```{r}
 
-#WRITE YOUR CODE HERE
+boxplot(movies$profits,
+        main = "Boxplot of Movie Profits",
+        xlab = "Movies",
+        ylab = "Profit (USD)")
+
+quantile(movies$profits)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The boxplot shows that film profits are widely distributed. Most films generate a profit around the median of $49,144, which is relatively modest. Notably, the first quartile (Q1) is negative (-$2,170,357), meaning that at least 25% of films operate at a loss. At the same time, there are many high outliers, reaching a maximum of $1,024,888,979; this indicates that a small number of films—the "blockbusters"—generate enormous profits, while the rest of the industry earns far less or even incurs losses. This suggests that profitability in the film industry is characterized by high risk and high potential returns: the majority of films are not particularly profitable, but a small number of successful films offset this.
 
 *Step d*
 
 ```{r}
 
-#WRITE YOUR CODE HERE
+movies$log_profits <- log(movies$profits)
+mean(movies$log_profits)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+For films with negative profit, the logarithm cannot be calculated because the logarithm is defined only for positive values; these result in NaN. Consequently, the mean of `log_profits` also becomes NaN, as R cannot calculate a mean while the column contains invalid values.
+
 
 *Step e*
 
 ```{r}
 
-#WRITE YOUR CODE HERE
+movies$log_profits[movies$profits <= 0] <- NA
+mean(movies$log_profits, na.rm = TRUE)
+
+boxplot(movies$log_profits,
+        main = "Boxplot of Log of Movie Profits",
+        xlab = "Movies",
+        ylab = "Log(Profit)")
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+After replacing the log(profits) for films with zero or negative profit with NA, the mean of log(profits) is now 17.395—a valid number, unlike the NaN result obtained in step 3d. Compared to the boxplot of profits from 3c, the boxplot of log(profits) is much more symmetrical: the median lies roughly in the middle of the box, and the extreme upper outliers have disappeared. This is because the log transformation compresses the highly skewed distribution of the original profit figures, making the data better approximate a symmetrical distribution.
 
 *Step f*
 
 ```{r}
 
-#WRITE YOUR CODE HERE
+plot(movies$runtime, movies$vote_average,
+     main = "Scatterplot of Runtime vs Average Vote",
+     xlab = "Runtime (minutes)",
+     ylab = "Average Vote")
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The scatter plot reveals a number of notable points that are likely data anomalies: a few films with a runtime of 0 minutes (presumably missing data) and some with an average vote of 0 (likely films that have not yet received any votes). Looking at the general pattern in the rest of the data, we see that films with longer runtimes generally receive slightly higher average votes—specifically, films exceeding 150 minutes are clustered at the higher end, whereas shorter films show a wider spread, including lower scores. A possible explanation for this is that longer films have more scope to flesh out the plot and characters, thereby engaging the audience more deeply with the story and leading to higher ratings.
 
 # Week 2
 
