@@ -78,14 +78,11 @@ length(unique(movies$title))
 
 3.  How many subjects? There are 707 subjects, we tested for unique subjects but there were none so the same amount as obeservations,
 
-3. How many subjects?
-   There are 707 subjects, we tested for uniqueness and there were no duplicates.
+4.  How many subjects? There are 707 subjects, we tested for uniqueness and there were no duplicates.
 
-4. What consists of a subject?
-   A subject is a single movie. Each row in the dataset represents one movie, described by variables such as: title, budget, revenue, runtime, genre.
+5.  What consists of a subject? A subject is a single movie. Each row in the dataset represents one movie, described by variables such as: title, budget, revenue, runtime, genre.
 
-
-2. Which of the following types of variables are present in your data set? (i) nominal; (ii) ordinal; (iii); interval; (iv) ratio. If present, name one example of such a variable present in your data set. \textbf{[4 points]}
+6.  Which of the following types of variables are present in your data set? (i) nominal; (ii) ordinal; (iii); interval; (iv) ratio. If present, name one example of such a variable present in your data set. \textbf{[4 points]}
 
 ```{r}
 table(movies$genre)
@@ -102,13 +99,13 @@ class(movies$release_year)
 
 **Your Answer:**
 
-*i, There are nominal variables, for example the original language.
+\*i, There are nominal variables, for example the original language.
 
-*ii: There are no ordinal variables, since none of the categorical variables (e.g. genre, original_language, gender) have a meaningful rank order.
+\*ii: There are no ordinal variables, since none of the categorical variables (e.g. genre, original_language, gender) have a meaningful rank order.
 
-*iii, There are interval variables, for exmaple the release dates.
+\*iii, There are interval variables, for exmaple the release dates.
 
-*iiii, there are ratio variables for example the runtime.
+\*iiii, there are ratio variables for example the runtime.
 
 <!-- -->
 
@@ -417,7 +414,7 @@ hist(movies$vote_average_rounded,
 
 **Your Answer:**
 
-Write your formulated response here.
+According to this histogram most of the movies are between 4 and 6. So Chantal might be right that in total mediocre movies bring the most profits.
 
 *step b*
 
@@ -432,10 +429,10 @@ mean_profits <- aggregate(profits ~ vote_average_rounded,
 mean_profits
 
 plot(mean_profits$vote_average_rounded,
-     mean_profits$profits,
+     mean_profits$profits / 1000000,
      main = "Mean Profit by Movie Rating",
      xlab = "Rounded Average Vote",
-     ylab = "Mean Profit",
+     ylab = "Mean Profit (millions)",
      pch = 19)
 
 mean_profits[which.max(mean_profits$profits), ]
@@ -445,11 +442,12 @@ mean_profits[which.max(mean_profits$profits), ]
 
 **Your Answer:**
 
-Write your formulated response here.
+This scatterplot shows that movies with a high rating brings in average the most profit.
 
 *step c*
 
 ```{r}
+# Create summary statistics for each rounded rating
 profit_summary <- aggregate(
   profits ~ vote_average_rounded,
   data = movies,
@@ -460,6 +458,7 @@ profit_summary <- aggregate(
   )
 )
 
+# Convert the results into separate columns
 profit_summary <- data.frame(
   vote_average_rounded = profit_summary$vote_average_rounded,
   mean_profits = profit_summary$profits[, "mean"],
@@ -467,49 +466,56 @@ profit_summary <- data.frame(
   n = profit_summary$profits[, "n"]
 )
 
+# Calculate standard error
 profit_summary$se <- profit_summary$sd / sqrt(profit_summary$n)
 
+# Calculate critical t-value for a 95% confidence interval
 profit_summary$t_critical <- qt(
   0.975,
   df = profit_summary$n - 1
 )
 
+# Calculate lower and upper bounds of the confidence interval
 profit_summary$lower_ci <- profit_summary$mean_profits -
   profit_summary$t_critical * profit_summary$se
 
 profit_summary$upper_ci <- profit_summary$mean_profits +
   profit_summary$t_critical * profit_summary$se
 
+# Plot mean profits in millions
 plot(profit_summary$vote_average_rounded,
-     profit_summary$mean_profits,
+     profit_summary$mean_profits / 1000000,
      main = "Mean Profit by Movie Rating with 95% Confidence Intervals",
      xlab = "Rounded Average Vote",
-     ylab = "Mean Profit",
+     ylab = "Mean Profit (millions)",
      pch = 19,
      ylim = range(c(profit_summary$lower_ci,
-                    profit_summary$upper_ci),
+                    profit_summary$upper_ci) / 1000000,
                   na.rm = TRUE))
 
+# Add 95% confidence interval bars
 arrows(x0 = profit_summary$vote_average_rounded,
-       y0 = profit_summary$lower_ci,
+       y0 = profit_summary$lower_ci / 1000000,
        x1 = profit_summary$vote_average_rounded,
-       y1 = profit_summary$upper_ci,
+       y1 = profit_summary$upper_ci / 1000000,
        angle = 90,
        code = 3,
        length = 0.05)
+
+ 
 
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+This Scatterplot gives a more clear view on how the profits are distributed within movies with a different rounded average vote. One thing that is really noticeable is the really large 95% interval of rounded average vote of 8 compared to the other rounded average vote. This is mostly due to the low frequency of movies with a vote of 8, which is shown in step a. 
 
 *step d*
 
 **Your Answer:**
 
-Write your formulated response here.
+
 
 # Week 4
 
