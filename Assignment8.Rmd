@@ -220,7 +220,7 @@ The scatter plot reveals a number of notable points that are likely data anomali
 
 **Your Answer:**
 
-Considering the largest index number exceeds the amount of unique index numbers by more than 4.000, our dataset movies3.tsv is the sample of a larger population. The full population we would describe as: "movies".
+Considering the largest index number exceeds the amount of unique index numbers by more than 4.000, our dataset movies3.tsv is the sample of a larger population. The full popultation we would describe as: "movies".
 
 2
 
@@ -242,29 +242,18 @@ print(mode_value)
 
 **Your Answer:**
 
-Nicholas Cage.
+Nicholas Cage
 
 *step b*
 
 ```{r}
-
-movies_nc <- movies %>% 
-  filter(first_actor == "Nicolas Cage")
-
-avg_revenue_nc <- movies_nc %>% 
-  summarise(mean_revenue_nc = mean(profits + budget))
-
-avg_revenue_nc
-
-avg_revenue <- summarise(movies, mean_revenue = mean(profits + budget))
-
-avg_revenue
+#WRITE YOUR CODE HERE
 
 ```
 
 **Your Answer:**
 
-The average revenue of the Nicolas Cage films is 119805381. The average revenue of the films in general is 77277126, below Cage's average. 
+Write your formulated response here.
 
 *step c*
 
@@ -274,8 +263,6 @@ The average revenue of the Nicolas Cage films is 119805381. The average revenue 
 ```
 
 **Your Answer:**
-
-Not quite trustworthy. This pool is small- 7 against the close to 100 Cage has starred in- and the law of large numbers holds that the average of a pool approaches that of the complete population as the pool increases in size.
 
 Write your formulated response here.
 
@@ -399,8 +386,6 @@ t.test(thriller_movies$runtime, conf.level = 0.99)
 
 **Your Answer:**
 
-Write your formulated response here.
-Write your formulated response here: 
 The dataset has 97 thriller movies, the average runtime is 104.18 minutes. The population variance is unknown so we used a t-distribution. the 99% confidence interval = [99.91,108.44]
 
 This means that we are 99% confident that the true mean runtime of thriller movies in the population is between 99.91 and 108.44 minutes.
@@ -408,7 +393,7 @@ This means that we are 99% confident that the true mean runtime of thriller movi
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
 n <- nrow(thriller_movies)
 xbar <- mean(thriller_movies$runtime)
 sigma <- sd(thriller_movies$runtime)
@@ -425,8 +410,6 @@ c(lower, upper)
 
 **Your Answer:**
 
-Write your formulated response here.
-Write your formulated response here:
 The 99% confidence interval = [100.00, 108.35] This means that we are 99% sure that the true mean runtime of thriller movies in the population is between 100.00 and 108.44 minutes.
 
 This interval is slightly narrower than the interval in 1a. In 1a the population variance is unknown, so the t-distribution is used. In 1b the population variance is assumed to be known, so we use the normal distribution. This gives a narrower confidence interval because the values are smaller.
@@ -442,7 +425,7 @@ b. For the validity of your test in 2a, what assumption about the distribution o
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
 runtime <- na.omit(movies$runtime)
 
 n <- length(runtime)
@@ -463,9 +446,6 @@ upper
 
 **Your Answer:**
 
-Write your formulated response here.
-Write your formulated response here:
-
 The null hypothesis is that the population variance of runtime is 500, so (H_0: \ sigma^2 = 500). The alternative hypothesis is that the variance is different from 500, so (H_1: \ sigma^2 \ neq 500).
 
 For this we used the chi-square test with a 10% significance level. The test statistic is 651.85, the lower critical value is 645.35 and the upper critical value is 768.92.
@@ -475,7 +455,6 @@ Because the test statistic falls between these two critical values, the null hyp
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
 runtime <- movies$runtime[!is.na(movies$runtime)]
 
 mu <- mean(runtime)
@@ -493,8 +472,6 @@ curve(dnorm(x, mean = mu, sd = sigma),
 
 **Your Answer:**
 
-Write your formulated response here.
-Write your formulated response here:
 Runtime should be normally distributed. We used a histogram and added a normal curve to check this. The distribution does not follow the normal curve good, especially in the tails. So we can conclude that the normality assumption does not seem to hold very well.
 
 
