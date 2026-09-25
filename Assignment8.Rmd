@@ -220,7 +220,7 @@ The scatter plot reveals a number of notable points that are likely data anomali
 
 **Your Answer:**
 
-Considering the largest index number exceeds the amount of unique index numbers by more than 4.000, our dataset movies3.tsv is the sample of a larger population. The full popultation we would describe as: "movies".
+Considering the largest index number exceeds the amount of unique index numbers by more than 4.000, our dataset movies3.tsv is the sample of a larger population. The full population we would describe as: "movies".
 
 2
 
@@ -242,18 +242,29 @@ print(mode_value)
 
 **Your Answer:**
 
-Nicholas Cage
+Nicholas Cage.
 
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
+movies_nc <- movies %>% 
+  filter(first_actor == "Nicolas Cage")
+
+avg_revenue_nc <- movies_nc %>% 
+  summarise(mean_revenue_nc = mean(profits + budget))
+
+avg_revenue_nc
+
+avg_revenue <- summarise(movies, mean_revenue = mean(profits + budget))
+
+avg_revenue
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The average revenue of the Nicolas Cage films is 119805381. The average revenue of the films in general is 77277126, below Cage's average. 
 
 *step c*
 
@@ -263,6 +274,8 @@ Write your formulated response here.
 ```
 
 **Your Answer:**
+
+Not quite trustworthy. This pool is small- 7 against the close to 100 Cage has starred in- and the law of large numbers holds that the average of a pool approaches that of the complete population as the pool increases in size.
 
 Write your formulated response here.
 
