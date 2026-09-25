@@ -390,8 +390,7 @@ hist(movies$vote_average_rounded,
 
 **Your Answer:**
 
-According to this histogram most of the movies are between 4 and 6. So Chantal might be right that in total mediocre movies bring the most profits.
-
+According to this histogram most of the movies are between 4 and 6. So Chantal could have a point that in total mediocre movies brings more profit.
 *step b*
 
 ```{r}
@@ -418,7 +417,7 @@ mean_profits[which.max(mean_profits$profits), ]
 
 **Your Answer:**
 
-This scatterplot shows that movies with a high rating brings in average the most profit.
+This scatterplot shows that movies with a high rating brings in average the most profit. Especially movies with a rounded average of 8 brings in more profit by a very large margin.
 
 *step c*
 
@@ -485,13 +484,11 @@ arrows(x0 = profit_summary$vote_average_rounded,
 
 **Your Answer:**
 
-This Scatterplot gives a more clear view on how the profits are distributed within movies with a different rounded average vote. One thing that is really noticeable is the really large 95% interval of rounded average vote of 8 compared to the other rounded average vote. This is mostly due to the low frequency of movies with a vote of 8, which is shown in step a. 
+This Scatterplot gives a more clear view on how the profits are distributed within movies with a different rounded average vote. One thing that is really noticeable is the really large 95% interval of rounded average vote of 8 compared to the other rounded average vote. This is mostly due to the low frequency of movies with a vote of 8, which is shown in step a.
 
 *step d*
 
-**Your Answer:**
-
-
+The results provide mostly support for Bob because movies with the highest average vote has the highest mean profit. However the movies with a rounded average of 8 have a extremely wider confidence interval. This means that its estimate is really uncertain. Movies with more moderate ratings have a narrower confidence interval, so their mean profits can be estimated more precisely, but their mean profit is lower. Therefore, we cannot fully conclude whether Bob or Chantal is fully right, although the results in general are more consistent with Bob's arguments. 
 
 # Week 4
 
