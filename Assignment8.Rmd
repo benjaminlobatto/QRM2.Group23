@@ -254,54 +254,88 @@ d.  Summarize and make a histogram of sample_vars. What is the mean, standard de
 e.  In your opinion, is a sample of 25 movies sufficient to get a reliable estimate of the population variance of profits, using the sample variance? Explain? \textbf{[2 points]}
 
 *step a*
-
 ```{r}
-#WRITE YOUR CODE HERE
+movies$profits <- movies$revenue - movies$budget
+movies$profits_million <- movies$profits / 1000000
 
+population_var <- mean(
+  (movies$profits_million - mean(movies$profits_million))^2
+)
+
+population_var
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+Profits were converted to millions by dividing by 1,000,000. The population variance is approximately 15,057.39 (million dollars)². Since the dataset represents the full population, the variance was calculated using N rather than N − 1.
 
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+set.seed(123)
+
+movies_sample <- movies[
+  sample(nrow(movies), 25, replace = FALSE),
+]
+
+sample_var <- var(movies_sample$profits_million)
+sample_var
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+A random sample of 25 movies was selected. The sample variance of profits is 39,218.46 (million dollars)², which is approximately 2.6 times the population variance of 15,057.39. This sample therefore overestimates the population variance due to random sampling variation.
 
 *step c*
 
 ```{r}
-#WRITE YOUR CODE HERE
+set.seed(456)
+
+sample_vars <- numeric(100)
+
+for (i in 1:100) {
+  sample_movies <- movies[
+    sample(nrow(movies), 25, replace = FALSE),
+  ]
+
+  sample_vars[i] <- var(sample_movies$profits_million)
+}
+
+head(sample_vars)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+A for-loop was used to draw 100 random samples of 25 movies. The variance of profits in millions was calculated for each sample and stored in the vector sample_vars. The first six variances are 2036.467, 3982.323, 51134.598, 14837.488, 14872.725, and 9271.950.
 
 *step d*
 
 ```{r}
-#WRITE YOUR CODE HERE
+summary(sample_vars)
+mean(sample_vars)
+sd(sample_vars)
+
+hist(
+  sample_vars,
+  main = "Distribution of sample variances",
+  xlab = "Sample variance (million dollars squared)",
+  col = "lightblue",
+  breaks = 15
+)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The mean of the sample variances is 15,686.51, and the standard deviation is 14,582.10. The distribution is strongly right-skewed: most sample variances are relatively low, while a few large values create a long right tail.
 
 *step e*
 
 **Your Answer:**
 
-Write your formulated response here.
+A sample of 25 movies does not appear sufficient for a reliable estimate of the population variance. The sample variances vary widely, with a standard deviation of 14,582.10. Although their mean is close to the population variance of 15,057.39, an individual sample can give a very different estimate. A larger sample would generally provide a more precise estimate.
 
 **Your answer here**
 
