@@ -78,34 +78,19 @@ length(unique(movies$title))
 
 3.  How many subjects? There are 707 subjects, we tested for unique subjects but there were none so the same amount as obeservations,
 
-4.  How many subjects? There are 707 subjects, we tested for uniqueness and there were no duplicates.
+4.  What consists of a subject? every row is one movie and every movie is a subject
 
-5.  What consists of a subject? A subject is a single movie. Each row in the dataset represents one movie, described by variables such as: title, budget, revenue, runtime, genre.
-
-6.  Which of the following types of variables are present in your data set? (i) nominal; (ii) ordinal; (iii); interval; (iv) ratio. If present, name one example of such a variable present in your data set. \textbf{[4 points]}
+5.  Which of the following types of variables are present in your data set? (i) nominal; (ii) ordinal; (iii); interval; (iv) ratio. If present, name one example of such a variable present in your data set. \textbf{[4 points]}
 
 ```{r}
-table(movies$genre)
-table(movies$original_language)
-table(movies$first_actor_gender)
-table(movies$director_gender)
-
-class(movies$budget)
-summary(movies$budget)
-class(movies$runtime)
-summary(movies$runtime)
-class(movies$release_year)
+#WRITE YOUR CODE HERE
 ```
 
 **Your Answer:**
 
-\*i, There are nominal variables, for example the original language.
+Write your response here.
 
-\*ii: There are no ordinal variables, since none of the categorical variables (e.g. genre, original_language, gender) have a meaningful rank order.
-
-\*iii, There are interval variables, for exmaple the release dates.
-
-\*iiii, there are ratio variables for example the runtime.
+3.  A movie studio wants to know which types of movies give maximal profit. Perform the following steps to provide the movie studio with an analysis which corresponds to their request:
 
 <!-- -->
 
@@ -122,97 +107,73 @@ For each step, you should provide first all the code you used to answer the ques
 
 ```{r}
 
-movies$profits <- movies$revenue - movies$budget
-mean(movies$profits)
-median(movies$profits)
-max(movies$profits)
-min(movies$profits)
+#WRITE YOUR CODE HERE
 
 ```
 
-Mean = 47019054
-Median = 49144
-Max = 1024888979
-Min = -150000000
+**Your Answer:**
 
-
+Write your formulated response here.
 
 *Step b*
 
 ```{r}
 
-movies[which.max(movies$profits), c("title", "profits")]
-movies[which.min(movies$profits), c("title", "profits")]
+#WRITE YOUR CODE HERE
 
 ```
 
 **Your Answer:**
 
-The film with the highest profit is *The Lord of the Rings: The Return of the King*, with a profit of $1,024,888,979. The film with the lowest profit is *The Wolfman*, with a loss of $150,000,000.
+Write your formulated response here.
 
 *Step c*
 
 ```{r}
 
-boxplot(movies$profits,
-        main = "Boxplot of Movie Profits",
-        xlab = "Movies",
-        ylab = "Profit (USD)")
-
-quantile(movies$profits)
+#WRITE YOUR CODE HERE
 
 ```
 
 **Your Answer:**
 
-The boxplot shows that film profits are widely distributed. Most films generate a profit around the median of $49,144, which is relatively modest. Notably, the first quartile (Q1) is negative (-$2,170,357), meaning that at least 25% of films operate at a loss. At the same time, there are many high outliers, reaching a maximum of $1,024,888,979; this indicates that a small number of films—the "blockbusters"—generate enormous profits, while the rest of the industry earns far less or even incurs losses. This suggests that profitability in the film industry is characterized by high risk and high potential returns: the majority of films are not particularly profitable, but a small number of successful films offset this.
+Write your formulated response here.
 
 *Step d*
 
 ```{r}
 
-movies$log_profits <- log(movies$profits)
-mean(movies$log_profits)
+#WRITE YOUR CODE HERE
 
 ```
 
 **Your Answer:**
 
-For films with negative profit, the logarithm cannot be calculated because the logarithm is defined only for positive values; these result in NaN. Consequently, the mean of `log_profits` also becomes NaN, as R cannot calculate a mean while the column contains invalid values.
-
+Write your formulated response here.
 
 *Step e*
 
 ```{r}
 
-movies$log_profits[movies$profits <= 0] <- NA
-mean(movies$log_profits, na.rm = TRUE)
-
-boxplot(movies$log_profits,
-        main = "Boxplot of Log of Movie Profits",
-        xlab = "Movies",
-        ylab = "Log(Profit)")
+#WRITE YOUR CODE HERE
 
 ```
 
 **Your Answer:**
 
-After replacing the log(profits) for films with zero or negative profit with NA, the mean of log(profits) is now 17.395—a valid number, unlike the NaN result obtained in step 3d. Compared to the boxplot of profits from 3c, the boxplot of log(profits) is much more symmetrical: the median lies roughly in the middle of the box, and the extreme upper outliers have disappeared. This is because the log transformation compresses the highly skewed distribution of the original profit figures, making the data better approximate a symmetrical distribution.
+Write your formulated response here.
 
 *Step f*
 
 ```{r}
 
-plot(movies$runtime, movies$vote_average,
-     main = "Scatterplot of Runtime vs Average Vote",
-     xlab = "Runtime (minutes)",
-     ylab = "Average Vote")
+#WRITE YOUR CODE HERE
 
 ```
 
 **Your Answer:**
 
-The scatter plot reveals a number of notable points that are likely data anomalies: a few films with a runtime of 0 minutes (presumably missing data) and some with an average vote of 0 (likely films that have not yet received any votes). Looking at the general pattern in the rest of the data, we see that films with longer runtimes generally receive slightly higher average votes—specifically, films exceeding 150 minutes are clustered at the higher end, whereas shorter films show a wider spread, including lower scores. A possible explanation for this is that longer films have more scope to flesh out the plot and characters, thereby engaging the audience more deeply with the story and leading to higher ratings.
+Write your formulated response here.
 
 # Week 2
 
@@ -231,18 +192,13 @@ c.  How trustworthy do you consider your conclusion to answer 2b? Use the term "
 *step a*
 
 ```{r}
-
-library(DescTools)
-
-mode_value <- Mode(movies$first_actor, na.rm = TRUE)
-
-print(mode_value)
+#WRITE YOUR CODE HERE
 
 ```
 
 **Your Answer:**
 
-Nicholas Cage
+Write your formulated response here.
 
 *step b*
 
@@ -326,23 +282,18 @@ Write your formulated response here.
 
 **Your answer here**
 
-# Week 3
 # Week 3 
 
-For the next part of the assignment, assume that the movies in your data frame are a random sample of a larger population of movies.
 For the next part of the assignment, assume that the movies in your data frame are a random sample of a larger population of movies. 
 
 1
 
-a.  Create a new data set that only includes movies that are of the genre "Thriller". For these thriller movies, give a 99 percent confidence interval for the variable *runtime*. Interpret the result. \textbf{[2 points]}
-b.  Now, assume that the variance of *runtime* amongst thriller movies in your data is exactly the same as the variance of *runtime* in the population. Under this assumption, give a 99 percent confidence interval for the variable *runtime* among thriller movies. Interpret the result. Is you confidence interval wider or less wide than the one you found under question 1a? Why is that the case? \textbf{[2 points]}
 a. Create a new data set that only includes movies that are of the genre "Thriller". For these thriller movies, give a 99 percent confidence interval for the variable *runtime*. Interpret the result. \textbf{[2 points]}
 b. Now, assume that the variance of *runtime* amongst thriller movies in your data is exactly the same as the variance of *runtime* in the population. Under this assumption, give a 99 percent confidence interval for the variable *runtime* among thriller movies. Interpret the result. Is you confidence interval wider or less wide than the one you found under question 1a? Why is that the case? \textbf{[2 points]}
 
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
 thriller_movies <- subset(movies, genre == "Thriller")
 
 t.test(thriller_movies$runtime, conf.level = 0.99)
@@ -352,7 +303,6 @@ t.test(thriller_movies$runtime, conf.level = 0.99)
 
 **Your Answer:**
 
-Write your formulated response here.
 Write your formulated response here: 
 The dataset has 97 thriller movies, the average runtime is 104.18 minutes. The population variance is unknown so we used a t-distribution. the 99% confidence interval = [99.91,108.44]
 
@@ -361,7 +311,6 @@ This means that we are 99% confident that the true mean runtime of thriller movi
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
 n <- nrow(thriller_movies)
 xbar <- mean(thriller_movies$runtime)
 sigma <- sd(thriller_movies$runtime)
@@ -378,7 +327,6 @@ c(lower, upper)
 
 **Your Answer:**
 
-Write your formulated response here.
 Write your formulated response here:
 The 99% confidence interval = [100.00, 108.35] This means that we are 99% sure that the true mean runtime of thriller movies in the population is between 100.00 and 108.44 minutes.
 
@@ -387,15 +335,12 @@ This interval is slightly narrower than the interval in 1a. In 1a the population
 
 2
 
-a.  Using an appropriate five-step procedure, set up a test for the null hypothesis that the variance of runtime equals $500$. Clearly state your null hypothesis, alternative hypothesis your test statistic, your critical value, and your conclusion. \textbf{[2 points]}
-b.  For the validity of your test in 2a, what assumption about the distribution of revenue needs to hold? Make an appropriate plot to test this assumption. What do you conclude? \textbf{[2 points]}
 a. Using an appropriate five-step procedure, set up a test for the null hypothesis that the variance of runtime equals $500$. Clearly state your null hypothesis, alternative hypothesis your test statistic, your critical value, and your conclusion. \textbf{[2 points]}
 b. For the validity of your test in 2a, what assumption about the distribution of revenue needs to hold? Make an appropriate plot to test this assumption. What do you conclude? \textbf{[2 points]}
 
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
 runtime <- na.omit(movies$runtime)
 
 n <- length(runtime)
@@ -416,7 +361,6 @@ upper
 
 **Your Answer:**
 
-Write your formulated response here.
 Write your formulated response here:
 
 The null hypothesis is that the population variance of runtime is 500, so (H_0: \ sigma^2 = 500). The alternative hypothesis is that the variance is different from 500, so (H_1: \ sigma^2 \ neq 500).
@@ -428,25 +372,18 @@ Because the test statistic falls between these two critical values, the null hyp
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
 runtime <- movies$runtime[!is.na(movies$runtime)]
 
-mu <- mean(runtime)
-sigma <- sd(runtime)
+qqnorm(runtime,
+       main = "Q-Q Plot of Runtime")
 
-hist(runtime, breaks = 30, prob = TRUE,
-     main = "Histogram of Runtime with Normal Curve",
-     xlab = "Runtime")
-
-curve(dnorm(x, mean = mu, sd = sigma),
-      col = "red", lwd = 2, add = TRUE)
+qqline(runtime)
 
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
 Write your formulated response here:
 Runtime should be normally distributed. We used a histogram and added a normal curve to check this. The distribution does not follow the normal curve good, especially in the tails. So we can conclude that the normality assumption does not seem to hold very well.
 
@@ -463,119 +400,44 @@ d.  Write an advice to settle the argument between Bob and Chantal. \textbf{[4 p
 *step a*
 
 ```{r}
-# Create rounded vote average
-movies$vote_average_rounded <- floor(movies$vote_average)
-
-# Histogram
-hist(movies$vote_average_rounded,
-     main = "Distribution of Rounded Movie Ratings",
-     xlab = "Rounded Average Vote",
-     ylab = "Frequency")
+#WRITE YOUR CODE HERE
 
 
 ```
 
 **Your Answer:**
 
-According to this histogram most of the movies are between 4 and 6. So Chantal could have a point that in total mediocre movies brings more profit.
+Write your formulated response here.
+
 *step b*
 
 ```{r}
-movies$profits <- movies$revenue - movies$budget
-
-mean_profits <- aggregate(profits ~ vote_average_rounded,
-                          data = movies,
-                          FUN = mean,
-                          na.rm = TRUE)
-
-mean_profits
-
-plot(mean_profits$vote_average_rounded,
-     mean_profits$profits / 1000000,
-     main = "Mean Profit by Movie Rating",
-     xlab = "Rounded Average Vote",
-     ylab = "Mean Profit (millions)",
-     pch = 19)
-
-mean_profits[which.max(mean_profits$profits), ]
+#WRITE YOUR CODE HERE
 
 
 ```
 
 **Your Answer:**
 
-This scatterplot shows that movies with a high rating brings in average the most profit. Especially movies with a rounded average of 8 brings in more profit by a very large margin.
+Write your formulated response here.
 
 *step c*
 
 ```{r}
-# Create summary statistics for each rounded rating
-profit_summary <- aggregate(
-  profits ~ vote_average_rounded,
-  data = movies,
-  FUN = function(x) c(
-    mean = mean(x, na.rm = TRUE),
-    sd = sd(x, na.rm = TRUE),
-    n = sum(!is.na(x))
-  )
-)
-
-# Convert the results into separate columns
-profit_summary <- data.frame(
-  vote_average_rounded = profit_summary$vote_average_rounded,
-  mean_profits = profit_summary$profits[, "mean"],
-  sd = profit_summary$profits[, "sd"],
-  n = profit_summary$profits[, "n"]
-)
-
-# Calculate standard error
-profit_summary$se <- profit_summary$sd / sqrt(profit_summary$n)
-
-# Calculate critical t-value for a 95% confidence interval
-profit_summary$t_critical <- qt(
-  0.975,
-  df = profit_summary$n - 1
-)
-
-# Calculate lower and upper bounds of the confidence interval
-profit_summary$lower_ci <- profit_summary$mean_profits -
-  profit_summary$t_critical * profit_summary$se
-
-profit_summary$upper_ci <- profit_summary$mean_profits +
-  profit_summary$t_critical * profit_summary$se
-
-# Plot mean profits in millions
-plot(profit_summary$vote_average_rounded,
-     profit_summary$mean_profits / 1000000,
-     main = "Mean Profit by Movie Rating with 95% Confidence Intervals",
-     xlab = "Rounded Average Vote",
-     ylab = "Mean Profit (millions)",
-     pch = 19,
-     ylim = range(c(profit_summary$lower_ci,
-                    profit_summary$upper_ci) / 1000000,
-                  na.rm = TRUE))
-
-# Add 95% confidence interval bars
-arrows(x0 = profit_summary$vote_average_rounded,
-       y0 = profit_summary$lower_ci / 1000000,
-       x1 = profit_summary$vote_average_rounded,
-       y1 = profit_summary$upper_ci / 1000000,
-       angle = 90,
-       code = 3,
-       length = 0.05)
-
- 
+#WRITE YOUR CODE HERE
 
 
 ```
 
 **Your Answer:**
 
-This Scatterplot gives a more clear view on how the profits are distributed within movies with a different rounded average vote. One thing that is really noticeable is the really large 95% interval of rounded average vote of 8 compared to the other rounded average vote. This is mostly due to the low frequency of movies with a vote of 8, which is shown in step a.
+Write your formulated response here.
 
 *step d*
 
-The results provide mostly support for Bob because movies with the highest average vote has the highest mean profit. However the movies with a rounded average of 8 have a extremely wider confidence interval. This means that its estimate is really uncertain. Movies with more moderate ratings have a narrower confidence interval, so their mean profits can be estimated more precisely, but their mean profit is lower. Therefore, we cannot fully conclude whether Bob or Chantal is fully right, although the results in general are more consistent with Bob's arguments. 
+**Your Answer:**
+
+Write your formulated response here.
 
 # Week 4
 
