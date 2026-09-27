@@ -67,12 +67,11 @@ movies <- read.delim("movies3.tsv")
 
 nrow(movies)                 # Number of rows: 707
 ncol(movies)                 # Number of columns: 19
-nrow(movies) * ncol(movies)   # Total number of cells: 13433
 ```
 
 **Your Answer:**
 
-1. How many observations? There are 13,433 observations (707 rows × 19 columns).
+1. How many observations? There are 707 observations (707 rows).
 
 2.  How many variables? There are 19 variables
 
@@ -248,7 +247,7 @@ print(mode_value)
 
 **Your Answer:**
 
-Nicholas Cage
+Nicolas Cage
 
 *step b*
 
@@ -478,7 +477,7 @@ upper
 
 The null hypothesis is that the population variance of runtime is 500, so (H_0: \ sigma^2 = 500). The alternative hypothesis is that the variance is different from 500, so (H_1: \ sigma^2 \ neq 500).
 
-For this we used the chi-square test with a 10% significance level. The test statistic is 651.85, the lower critical value is 645.35 and the upper critical value is 768.92.
+For this we used the chi-square test with a 5% significance level. The test statistic is 651.85, the lower critical value is 634.26 and the upper critical value is 781.52.
 
 Because the test statistic falls between these two critical values, the null hypothesis could be true. This means that there is not enough evidence to say that the population variance of runtime is different from 500.
 
@@ -568,127 +567,65 @@ mean_profits[which.max(mean_profits$profits), ]
 Movies with a vote_average_rounded of 8 have the highest average profit: approximately $313.68 million. The scatter plot shows that higher-rated movies generally have higher average profits in this dataset.
 
 *step c*
-# Find a year or release date column
-column_names <- tolower(names(movies))
 
-year_column <- which(
-  column_names %in% c("year", "release_year")
-)
-
-date_column <- which(
-  column_names %in% c("release_date", "releasedate")
-)
-
-if (length(year_column) == 1) {
-
-  movie_year <- as.numeric(
-    as.character(movies[[year_column]])
-  )
-
-} else if (length(date_column) == 1) {
-
-  # Extract a four-digit year from the release date
-  dates <- as.character(movies[[date_column]])
-  year_pattern <- "\\b(18|19|20|21)[0-9]{2}\\b"
-
-  movie_year <- rep(NA_integer_, length(dates))
-  has_year <- !is.na(dates) & grepl(year_pattern, dates)
-
-  movie_year[has_year] <- as.integer(
-    regmatches(
-      dates[has_year],
-      regexpr(year_pattern, dates[has_year])
-    )
-  )
-
-} else {
-
-  stop(
-    paste(
-      "Cannot identify a unique year or release date column.",
-      "Available columns:",
-      paste(names(movies), collapse = ", ")
-    )
-  )
-}
-
-# Prepare data
-plot_data <- data.frame(
-  year = movie_year,
-  profits = movies$revenue - movies$budget
-)
-
-plot_data <- plot_data[
-  is.finite(plot_data$year) &
-    is.finite(plot_data$profits),
-]
-
-if (nrow(plot_data) == 0) {
-  stop("No valid years and profits found.")
-}
-
-# Calculate mean profits and 95% confidence intervals by year
-profit_by_year <- do.call(
-  rbind,
-  lapply(sort(unique(plot_data$year)), function(y) {
-
-    x <- plot_data$profits[plot_data$year == y]
-    n <- length(x)
-    mean_profit <- mean(x)
-
-    margin <- if (n > 1) {
-      qt(0.975, df = n - 1) * sd(x) / sqrt(n)
-    } else {
-      NA_real_
-    }
-
-    data.frame(
-      year = y,
-      n = n,
-      mean_profits = mean_profit,
-      lower = mean_profit - margin,
-      upper = mean_profit + margin
-    )
-  })
-)
-
-# Plot average profits in millions of dollars
-plot(
-  profit_by_year$year,
-  profit_by_year$mean_profits / 1000000,
-  ylim = range(
-    c(
-      profit_by_year$mean_profits,
-      profit_by_year$lower,
-      profit_by_year$upper
-    ) / 1000000,
-    na.rm = TRUE
-  ),
-  main = "Mean Profits by Year with 95% Confidence Intervals",
-  xlab = "Year",
-  ylab = "Mean profits (million dollars)",
-  pch = 19,
-  col = "blue"
-)
-
-# Add confidence interval bars where they can be calculated
-valid <- is.finite(profit_by_year$lower) &
-  is.finite(profit_by_year$upper)
-
-with(
-  profit_by_year[valid, ],
-  arrows(
-    x0 = year,
-    y0 = lower / 1000000,
-    x1 = year,
-    y1 = upper / 1000000,
-    angle = 90,
-    code = 3,
-    length = 0.05
+```{r}
+# Create summary statistics for each rounded rating
+profit_summary <- aggregate(
+  profits ~ vote_average_rounded,
+  data = movies,
+  FUN = function(x) c(
+    mean = mean(x, na.rm = TRUE),
+    sd = sd(x, na.rm = TRUE),
+    n = sum(!is.na(x))
   )
 )
 
-profit_by_year
+# Convert the results into separate columns
+profit_summary <- data.frame(
+  vote_average_rounded = profit_summary$vote_average_rounded,
+  mean_profits = profit_summary$profits[, "mean"],
+  sd = profit_summary$profits[, "sd"],
+  n = profit_summary$profits[, "n"]
+)
+
+# Calculate standard error
+profit_summary$se <- profit_summary$sd / sqrt(profit_summary$n)
+
+# Calculate critical t-value for a 95% confidence interval
+profit_summary$t_critical <- qt(
+  0.975,
+  df = profit_summary$n - 1
+)
+
+# Calculate lower and upper bounds of the confidence interval
+profit_summary$lower_ci <- profit_summary$mean_profits -
+  profit_summary$t_critical * profit_summary$se
+
+profit_summary$upper_ci <- profit_summary$mean_profits +
+  profit_summary$t_critical * profit_summary$se
+
+# Plot mean profits in millions
+plot(profit_summary$vote_average_rounded,
+     profit_summary$mean_profits / 1000000,
+     main = "Mean Profit by Movie Rating with 95% Confidence Intervals",
+     xlab = "Rounded Average Vote",
+     ylab = "Mean Profit (millions)",
+     pch = 19,
+     ylim = range(c(profit_summary$lower_ci,
+                    profit_summary$upper_ci) / 1000000,
+                  na.rm = TRUE))
+
+# Add 95% confidence interval bars
+arrows(x0 = profit_summary$vote_average_rounded,
+       y0 = profit_summary$lower_ci / 1000000,
+       x1 = profit_summary$vote_average_rounded,
+       y1 = profit_summary$upper_ci / 1000000,
+       angle = 90,
+       code = 3,
+       length = 0.05)
+
+ 
+
 
 ```
 
