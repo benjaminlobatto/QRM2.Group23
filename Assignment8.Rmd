@@ -67,6 +67,7 @@ movies <- read.delim("movies3.tsv")
 
 nrow(movies)                 # Number of rows: 707
 ncol(movies)                 # Number of columns: 19
+length(unique(movies$title)) # Number of unique titles: 707
 ```
 
 **Your Answer:**
@@ -75,13 +76,13 @@ ncol(movies)                 # Number of columns: 19
 
 2.  How many variables? There are 19 variables
 
-3.  How many subjects? There are 707 subjects, we tested for unique subjects but there were none so the same amount as obeservations,
+3.  How many subjects? There are 707 subjects, we tested for uniqueness and there were no duplicates.
 
-4.  How many subjects? There are 707 subjects, we tested for uniqueness and there were no duplicates.
+4.  What consists of a subject? A subject is a single movie. Each row in the dataset represents one movie, described by variables such as: title, budget, revenue, runtime, genre.
 
-5.  What consists of a subject? A subject is a single movie. Each row in the dataset represents one movie, described by variables such as: title, budget, revenue, runtime, genre.
+<!-- -->
 
-6.  Which of the following types of variables are present in your data set? (i) nominal; (ii) ordinal; (iii); interval; (iv) ratio. If present, name one example of such a variable present in your data set. \textbf{[4 points]}
+2. Which of the following types of variables are present in your data set? (i) nominal; (ii) ordinal; (iii); interval; (iv) ratio. If present, name one example of such a variable present in your data set. \textbf{[4 points]}
 
 ```{r}
 table(movies$genre)
@@ -102,9 +103,13 @@ class(movies$release_year)
 
 \*ii: There are no ordinal variables, since none of the categorical variables (e.g. genre, original_language, gender) have a meaningful rank order.
 
-\*iii, There are interval variables, for exmaple the release dates.
+\*iii, There are interval variables, for example the release dates.
 
-\*iiii, there are ratio variables for example the runtime.
+\*iv, there are ratio variables for example the runtime.
+
+<!-- -->
+
+3. A movie studio wants to know which types of movies give maximal profit. Perform the following steps to provide the movie studio with an analysis which corresponds to their request:
 
 <!-- -->
 
@@ -129,12 +134,9 @@ min(movies$profits)
 
 ```
 
-Mean = 47019054
-Median = 49144
-Max = 1024888979
-Min = -150000000
+**Your Answer:**
 
-
+The mean profit is $47,019,054, while the median profit is only $49,144. The maximum profit is $1,024,888,979 and the minimum profit is -$150,000,000. The large gap between the mean and the median indicates that the distribution of profits is strongly right-skewed: most movies earn modest profits, while a small number of very successful movies earn very large profits and pull the mean upwards.
 
 *Step b*
 
@@ -384,20 +386,14 @@ The mean of the sample variances is 15,686.51, and the standard deviation is 14,
 
 A sample of 25 movies does not appear sufficient for a reliable estimate of the population variance. The sample variances vary widely, with a standard deviation of 14,582.10. Although their mean is close to the population variance of 15,057.39, an individual sample can give a very different estimate. A larger sample would generally provide a more precise estimate.
 
-**Your answer here**
-
 # Week 3
-# Week 3 
 
 For the next part of the assignment, assume that the movies in your data frame are a random sample of a larger population of movies.
-For the next part of the assignment, assume that the movies in your data frame are a random sample of a larger population of movies. 
 
 1
 
 a.  Create a new data set that only includes movies that are of the genre "Thriller". For these thriller movies, give a 99 percent confidence interval for the variable *runtime*. Interpret the result. \textbf{[2 points]}
 b.  Now, assume that the variance of *runtime* amongst thriller movies in your data is exactly the same as the variance of *runtime* in the population. Under this assumption, give a 99 percent confidence interval for the variable *runtime* among thriller movies. Interpret the result. Is you confidence interval wider or less wide than the one you found under question 1a? Why is that the case? \textbf{[2 points]}
-a. Create a new data set that only includes movies that are of the genre "Thriller". For these thriller movies, give a 99 percent confidence interval for the variable *runtime*. Interpret the result. \textbf{[2 points]}
-b. Now, assume that the variance of *runtime* amongst thriller movies in your data is exactly the same as the variance of *runtime* in the population. Under this assumption, give a 99 percent confidence interval for the variable *runtime* among thriller movies. Interpret the result. Is you confidence interval wider or less wide than the one you found under question 1a? Why is that the case? \textbf{[2 points]}
 
 *step a*
 
@@ -439,7 +435,7 @@ c(lower, upper)
 
 **Your Answer:**
 
-The 99% confidence interval = [100.00, 108.35] This means that we are 99% sure that the true mean runtime of thriller movies in the population is between 100.00 and 108.44 minutes.
+The 99% confidence interval = [100.00, 108.35] This means that we are 99% sure that the true mean runtime of thriller movies in the population is between 100.00 and 108.35 minutes.
 
 This interval is slightly narrower than the interval in 1a. In 1a the population variance is unknown, so the t-distribution is used. In 1b the population variance is assumed to be known, so we use the normal distribution. This gives a narrower confidence interval because the values are smaller.
 
@@ -448,8 +444,6 @@ This interval is slightly narrower than the interval in 1a. In 1a the population
 
 a.  Using an appropriate five-step procedure, set up a test for the null hypothesis that the variance of runtime equals $500$. Clearly state your null hypothesis, alternative hypothesis your test statistic, your critical value, and your conclusion. \textbf{[2 points]}
 b.  For the validity of your test in 2a, what assumption about the distribution of runtime needs to hold? Make an appropriate plot to test this assumption. What do you conclude? \textbf{[2 points]}
-a. Using an appropriate five-step procedure, set up a test for the null hypothesis that the variance of runtime equals $500$. Clearly state your null hypothesis, alternative hypothesis your test statistic, your critical value, and your conclusion. \textbf{[2 points]}
-b. For the validity of your test in 2a, what assumption about the distribution of revenue needs to hold? Make an appropriate plot to test this assumption. What do you conclude? \textbf{[2 points]}
 
 *step a*
 
