@@ -780,13 +780,29 @@ f.  Estimate a model that is able to predict the revenue of this movie. Give its
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
+library(tidyverse)
+
+mean_profits_month <- movies %>%
+  group_by(release_month) %>%
+  summarise(
+    mean_profits = mean(profits, na.rm = TRUE)
+  )
+
+ggplot(mean_profits_month, aes(x = release_month, y = mean_profits)) +
+  geom_bar(stat = "identity") +
+  labs(
+    title = "Mean Profits by Month of Release",
+    x = "Month of Release",
+    y = "Mean Profits"
+  ) +
+  scale_x_continuous(breaks = 1:12)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+It seems unlikely that the month of release has nothing to do with mean profits, considering the wide disparities across the year.
 
 *step b*
 
