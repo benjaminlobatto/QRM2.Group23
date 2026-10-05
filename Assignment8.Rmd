@@ -807,50 +807,136 @@ It seems unlikely that the month of release has nothing to do with mean profits,
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+movies$english <- ifelse(movies$original_language == "en", 1, 0)
+
+model_b <- lm(
+  log_profits ~ log(budget) + english + release_month,
+  data = movies,
+  subset = is.finite(log_profits) & budget > 0
+)
+
+summary(model_b)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The intercept is 9.45382: the predicted log profit for a non-English movie with a budget of 1 and release month 0. Since month 0 does not exist, this has little practical meaning.
+
+Holding the other variables constant:
+- A 1% higher budget is associated with approximately 0.484% higher profits.
+- English-language movies have approximately 20.2% lower profits than non-English movies, calculated as 100 × (exp(-0.22545) − 1). This difference is not statistically significant (p = 0.557).
+- A one-month increase in release month is associated with approximately 1.9% higher profits. This relationship is not statistically significant (p = 0.418).
 
 *step c*
 
 ```{r}
-#WRITE YOUR CODE HERE
+summary(model_b)$coefficients["release_month", ]
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+We test H₀: β_release_month = 0 against H₁: β_release_month ≠ 0 using a two-sided t-test. The test statistic is 0.811 and the p-value is 0.418.
+
+Since p > 0.05, we do not reject H₀. There is insufficient evidence of a linear relationship between release month and log profits, controlling for log budget and language.
 
 *step d*
 
 ```{r}
-#WRITE YOUR CODE HERE
+data_d <- subset(
+  movies,
+  is.finite(log_profits) & is.finite(budget) & budget > 0 &
+    !is.na(english) & !is.na(release_month)
+)
+
+# Model met een flexibelere curve
+model_d <- lm(
+  log_profits ~ log(budget) + english +
+    release_month + I(release_month^2),
+  data = data_d
+)
+
+summary(model_d)
+
+# Model zonder beide maandtermen
+model_without_month <- lm(
+  log_profits ~ log(budget) + english,
+  data = data_d
+)
+
+# Gezamenlijke F-toets voor beide maandtermen
+anova(model_without_month, model_d)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+A linear relationship does not seem reasonable based on the plot in part A: mean profits show several peaks and dips rather than a steady increase or decrease. We therefore add a squared release-month term to allow for curvature, although a quadratic curve cannot capture every fluctuation.
+
+The estimated model is:
+
+Predicted log profits = 9.151123 + 0.482036 × log(budget) − 0.188268 × english + 0.145982 × release_month − 0.009968 × release_month².
+
+We test H₀: both month coefficients are zero against H₁: at least one is non-zero.
+
+The joint F-test gives F(2, 330) = 1.2244 and p = 0.2953. Since p > 0.05, we do not reject H₀. There is insufficient evidence that release month is associated with log profits in this quadratic model, controlling for budget and language.
 
 *step e*
 
 ```{r}
-#WRITE YOUR CODE HERE
+predictions <- data.frame(
+  release_month = 1:12,
+  budget = 40000000,
+  english = 1
+)
+
+predictions$predicted_log_profit <- predict(
+  model_d,
+  newdata = predictions
+)
+
+predictions[
+  order(predictions$predicted_log_profit, decreasing = TRUE),
+]
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The model predicts the highest log profits in July, with August a close second. However, the month terms are not jointly statistically significant (p = 0.2953), so there is insufficient evidence to confidently recommend one month over another. The studio should also consider competition, holidays and marketing when choosing a release date. The model predicts log profits rather than revenue directly.
 
 *step f*
 
 ```{r}
-#WRITE YOUR CODE HERE
+# Maak indicatoren voor Engelse taal en thrillergenre
+movies$english <- ifelse(movies$original_language == "en", 1, 0)
+movies$thriller <- as.integer(
+  grepl("thriller", movies$genre, ignore.case = TRUE)
+)
+
+# Schat het model voor omzet
+model_f <- lm(
+  revenue ~ budget + english + thriller + release_year,
+  data = movies
+)
+
+summary(model_f)
+
+# Kenmerken van de nieuwe film
+new_movie <- data.frame(
+  budget = 40000000,
+  english = 1,
+  thriller = 1,
+  release_year = 2026
+)
+
+# Voorspelde omzet met een 99% voorspellingsinterval
+predict(
+  model_f,
+  newdata = new_movie,
+  interval = "prediction",
+  level = 0.99
+)
 
 ```
