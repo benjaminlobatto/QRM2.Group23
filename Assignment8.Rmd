@@ -72,7 +72,7 @@ length(unique(movies$title)) # Number of unique titles: 707
 
 **Your Answer:**
 
-1. How many observations? There are 707 observations (707 rows).
+1.  How many observations? There are 707 observations (707 rows).
 
 2.  How many variables? There are 19 variables
 
@@ -82,7 +82,7 @@ length(unique(movies$title)) # Number of unique titles: 707
 
 <!-- -->
 
-2. Which of the following types of variables are present in your data set? (i) nominal; (ii) ordinal; (iii); interval; (iv) ratio. If present, name one example of such a variable present in your data set. \textbf{[4 points]}
+2.  Which of the following types of variables are present in your data set? (i) nominal; (ii) ordinal; (iii); interval; (iv) ratio. If present, name one example of such a variable present in your data set. \textbf{[4 points]}
 
 ```{r}
 table(movies$genre)
@@ -109,7 +109,7 @@ class(movies$release_year)
 
 <!-- -->
 
-3. A movie studio wants to know which types of movies give maximal profit. Perform the following steps to provide the movie studio with an analysis which corresponds to their request:
+3.  A movie studio wants to know which types of movies give maximal profit. Perform the following steps to provide the movie studio with an analysis which corresponds to their request:
 
 <!-- -->
 
@@ -136,7 +136,7 @@ min(movies$profits)
 
 **Your Answer:**
 
-The mean profit is $47,019,054, while the median profit is only $49,144. The maximum profit is $1,024,888,979 and the minimum profit is -$150,000,000. The large gap between the mean and the median indicates that the distribution of profits is strongly right-skewed: most movies earn modest profits, while a small number of very successful movies earn very large profits and pull the mean upwards.
+The mean profit is \$47,019,054, while the median profit is only \$49,144. The maximum profit is \$1,024,888,979 and the minimum profit is -\$150,000,000. The large gap between the mean and the median indicates that the distribution of profits is strongly right-skewed: most movies earn modest profits, while a small number of very successful movies earn very large profits and pull the mean upwards.
 
 *Step b*
 
@@ -149,7 +149,7 @@ movies[which.min(movies$profits), c("title", "profits")]
 
 **Your Answer:**
 
-The film with the highest profit is *The Lord of the Rings: The Return of the King*, with a profit of $1,024,888,979. The film with the lowest profit is *The Wolfman*, with a loss of $150,000,000.
+The film with the highest profit is *The Lord of the Rings: The Return of the King*, with a profit of \$1,024,888,979. The film with the lowest profit is *The Wolfman*, with a loss of \$150,000,000.
 
 *Step c*
 
@@ -166,7 +166,7 @@ quantile(movies$profits)
 
 **Your Answer:**
 
-The boxplot shows that film profits are widely distributed. Most films generate a profit around the median of $49,144, which is relatively modest. Notably, the first quartile (Q1) is negative (-$2,170,357), meaning that at least 25% of films operate at a loss. At the same time, there are many high outliers, reaching a maximum of $1,024,888,979; this indicates that a small number of films—the "blockbusters"—generate enormous profits, while the rest of the industry earns far less or even incurs losses. This suggests that profitability in the film industry is characterized by high risk and high potential returns: the majority of films are not particularly profitable, but a small number of successful films offset this.
+The boxplot shows that film profits are widely distributed. Most films generate a profit around the median of \$49,144, which is relatively modest. Notably, the first quartile (Q1) is negative (-\$2,170,357), meaning that at least 25% of films operate at a loss. At the same time, there are many high outliers, reaching a maximum of \$1,024,888,979; this indicates that a small number of films—the "blockbusters"—generate enormous profits, while the rest of the industry earns far less or even incurs losses. This suggests that profitability in the film industry is characterized by high risk and high potential returns: the majority of films are not particularly profitable, but a small number of successful films offset this.
 
 *Step d*
 
@@ -186,7 +186,6 @@ mean(movies$log_profits)
 **Your Answer:**
 
 For films with negative profit, the logarithm cannot be calculated because the logarithm is defined only for positive values; these result in NaN. Consequently, the mean of `log_profits` also becomes NaN, as R cannot calculate a mean while the column contains invalid values.
-
 
 *Step e*
 
@@ -279,7 +278,7 @@ comparison <- if (cage_mean > overall_mean) {
 
 **Your Answer:**
 
-The average revenue of movies featuring Nicolas Cage is approximately $119,805,381. This is higher than the average revenue of all movies in the dataset, which is approximately $77,277,126.
+The average revenue of movies featuring Nicolas Cage is approximately \$119,805,381. This is higher than the average revenue of all movies in the dataset, which is approximately \$77,277,126.
 
 *step c*
 
@@ -303,6 +302,7 @@ d.  Summarize and make a histogram of sample_vars. What is the mean, standard de
 e.  In your opinion, is a sample of 25 movies sufficient to get a reliable estimate of the population variance of profits, using the sample variance? Explain? \textbf{[2 points]}
 
 *step a*
+
 ```{r}
 movies$profits <- movies$revenue - movies$budget
 movies$profits_million <- movies$profits / 1000000
@@ -439,7 +439,6 @@ The 99% confidence interval = [100.00, 108.35] This means that we are 99% sure t
 
 This interval is slightly narrower than the interval in 1a. In 1a the population variance is unknown, so the t-distribution is used. In 1b the population variance is assumed to be known, so we use the normal distribution. This gives a narrower confidence interval because the values are smaller.
 
-
 2
 
 a.  Using an appropriate five-step procedure, set up a test for the null hypothesis that the variance of runtime equals $500$. Clearly state your null hypothesis, alternative hypothesis your test statistic, your critical value, and your conclusion. \textbf{[2 points]}
@@ -469,7 +468,7 @@ upper
 
 **Your Answer:**
 
-The null hypothesis is that the population variance of runtime is 500, so (H_0: \ sigma^2 = 500). The alternative hypothesis is that the variance is different from 500, so (H_1: \ sigma^2 \ neq 500).
+The null hypothesis is that the population variance of runtime is 500, so (H_0:  sigma\^2 = 500). The alternative hypothesis is that the variance is different from 500, so (H_1:  sigma\^2  neq 500).
 
 For this we used the chi-square test with a 5% significance level. The test statistic is 651.85, the lower critical value is 634.26 and the upper critical value is 781.52.
 
@@ -496,7 +495,6 @@ curve(dnorm(x, mean = mu, sd = sigma),
 **Your Answer:**
 
 Runtime should be normally distributed. We used a histogram and added a normal curve to check this. The distribution does not follow the normal curve good, especially in the tails. So we can conclude that the normality assumption does not seem to hold very well.
-
 
 3.  There is an argument going on in the movie studio. *Bob* claims that they should make higher-quality movies, as this will bring in more profits. *Chantal* disagrees. She tells Bob that mediocre movies bring in the most profits. You are asked to advise on who is right.
 
@@ -531,8 +529,7 @@ hist(
 
 **Your Answer:**
 
-I created vote_average_rounded by removing the decimal part of vote_average using floor(). For example, 6.3 becomes 6 and 8.7 becomes 8. The histogram shows that most movies have ratings of 5 or 6, while very low and very high ratings are less common.
-*step b*
+I created vote_average_rounded by removing the decimal part of vote_average using floor(). For example, 6.3 becomes 6 and 8.7 becomes 8. The histogram shows that most movies have ratings of 5 or 6, while very low and very high ratings are less common. *step b*
 
 ```{r}
 movies$profits <- movies$revenue - movies$budget
@@ -558,7 +555,7 @@ mean_profits[which.max(mean_profits$profits), ]
 
 **Your Answer:**
 
-Movies with a vote_average_rounded of 8 have the highest average profit: approximately $313.68 million. The scatter plot shows that higher-rated movies generally have higher average profits in this dataset.
+Movies with a vote_average_rounded of 8 have the highest average profit: approximately \$313.68 million. The scatter plot shows that higher-rated movies generally have higher average profits in this dataset.
 
 *step c*
 
@@ -629,7 +626,7 @@ This Scatterplot gives a more clear view on how the profits are distributed with
 
 *step d*
 
-The results provide mostly support for Bob because movies with the highest average vote has the highest mean profit. However the movies with a rounded average of 8 have a extremely wider confidence interval. This means that its estimate is really uncertain. Movies with more moderate ratings have a narrower confidence interval, so their mean profits can be estimated more precisely, but their mean profit is lower. Therefore, we cannot fully conclude whether Bob or Chantal is fully right, although the results in general are more consistent with Bob's arguments. 
+The results provide mostly support for Bob because movies with the highest average vote has the highest mean profit. However the movies with a rounded average of 8 have a extremely wider confidence interval. This means that its estimate is really uncertain. Movies with more moderate ratings have a narrower confidence interval, so their mean profits can be estimated more precisely, but their mean profit is lower. Therefore, we cannot fully conclude whether Bob or Chantal is fully right, although the results in general are more consistent with Bob's arguments.
 
 # Week 4
 
@@ -648,13 +645,17 @@ g.  Who do you think is correct? Bob or Chantal? What would you advise the movie
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+movies$profits <- movies$revenue - movies$budget
+
+model_level <- lm(profits ~ budget, data = movies)
+
+summary(model_level)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+This model estimates how much profit changes on average when the budget increases by one dollar.
 
 *step b*
 
@@ -665,18 +666,19 @@ Write your formulated response here.
 
 **Your Answer:**
 
-Write your formulated response here.
+The estimated value of β1 is 1.576. This means that an one dollar increase in production budget is associated with an 1.576 dollar increase in estimated profit.
+
 
 *step c*
 
 ```{r}
-#WRITE YOUR CODE HERE
+pt(16.825, df = 705)
 
 ```
 
 **Your Answer:**
+The estimated t-statistic is 16.285 and the one-sided p-value for the test \(H_0:\beta_1\geq0\) against \(H_1:\beta_1<0\) is approximately 1.00. So, we do not reject the null hypothesis. 
 
-Write your formulated response here.
 
 *step d*
 
@@ -823,10 +825,7 @@ summary(model_b)
 
 The intercept is 9.45382: the predicted log profit for a non-English movie with a budget of 1 and release month 0. Since month 0 does not exist, this has little practical meaning.
 
-Holding the other variables constant:
-- A 1% higher budget is associated with approximately 0.484% higher profits.
-- English-language movies have approximately 20.2% lower profits than non-English movies, calculated as 100 × (exp(-0.22545) − 1). This difference is not statistically significant (p = 0.557).
-- A one-month increase in release month is associated with approximately 1.9% higher profits. This relationship is not statistically significant (p = 0.418).
+Holding the other variables constant: - A 1% higher budget is associated with approximately 0.484% higher profits. - English-language movies have approximately 20.2% lower profits than non-English movies, calculated as 100 × (exp(-0.22545) − 1). This difference is not statistically significant (p = 0.557). - A one-month increase in release month is associated with approximately 1.9% higher profits. This relationship is not statistically significant (p = 0.418).
 
 *step c*
 
@@ -839,7 +838,7 @@ summary(model_b)$coefficients["release_month", ]
 
 We test H₀: β_release_month = 0 against H₁: β_release_month ≠ 0 using a two-sided t-test. The test statistic is 0.811 and the p-value is 0.418.
 
-Since p > 0.05, we do not reject H₀. There is insufficient evidence of a linear relationship between release month and log profits, controlling for log budget and language.
+Since p \> 0.05, we do not reject H₀. There is insufficient evidence of a linear relationship between release month and log profits, controlling for log budget and language.
 
 *step d*
 
@@ -880,7 +879,7 @@ Predicted log profits = 9.151123 + 0.482036 × log(budget) − 0.188268 × engli
 
 We test H₀: both month coefficients are zero against H₁: at least one is non-zero.
 
-The joint F-test gives F(2, 330) = 1.2244 and p = 0.2953. Since p > 0.05, we do not reject H₀. There is insufficient evidence that release month is associated with log profits in this quadratic model, controlling for budget and language.
+The joint F-test gives F(2, 330) = 1.2244 and p = 0.2953. Since p \> 0.05, we do not reject H₀. There is insufficient evidence that release month is associated with log profits in this quadratic model, controlling for budget and language.
 
 *step e*
 
