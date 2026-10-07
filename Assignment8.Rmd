@@ -668,7 +668,6 @@ This model estimates how much profit changes on average when the budget increase
 
 The estimated value of β1 is 1.576. This means that an one dollar increase in production budget is associated with an 1.576 dollar increase in estimated profit.
 
-
 *step c*
 
 ```{r}
@@ -676,36 +675,55 @@ pt(16.825, df = 705)
 
 ```
 
-**Your Answer:**
-The estimated t-statistic is 16.285 and the one-sided p-value for the test \(H_0:\beta_1\geq0\) against \(H_1:\beta_1<0\) is approximately 1.00. So, we do not reject the null hypothesis. 
-
+**Your Answer:** The estimated t-statistic is 16.285 and the one-sided p-value for the test $H_0:\beta_1\geq0$ against $H_1:\beta_1<0$ is approximately 1.00. So, we do not reject the null hypothesis.
 
 *step d*
 
 ```{r}
-#WRITE YOUR CODE HERE
+# Create log variables
+movies$log_profits <- ifelse(
+  movies$profits <= 0 | movies$revenue == 0 | movies$budget == 0,
+  NA,
+  log(movies$profits)
+)
+
+movies$log_budget <- ifelse(
+  movies$revenue == 0 | movies$budget == 0,
+  NA,
+  log(movies$budget)
+)
+
+# Estimate log-log regression
+model_log <- lm(log_profits ~ log_budget, data = movies)
+
+summary(model_log)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+Movies for which profits are zero or negative are assigned NA because their logarithm cannot be used in the regression. The model is estimated using the remaining observations
 
 *step e*
 
 ```{r}
-#WRITE YOUR CODE HERE
-
+coef(model_log)["log_budget"]
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The estimated value of β1 is 0.48224 since this is log-log model, the coefficient is interpreted as an elasticity. This means that a 1% increase means a 0.482% increase in profits on average.
 
 *step f*
 
 ```{r}
-#WRITE YOUR CODE HERE
+## R-squared of level-level model
+summary(model_level)$r.squared
+summary(model_level)$adj.r.squared
+
+# R-squared of log-log model
+summary(model_log)$r.squared
+summary(model_log)$adj.r.squared
 
 ```
 
