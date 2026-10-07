@@ -660,14 +660,12 @@ This model estimates how much profit changes on average when the budget increase
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
-
+coef(model_level)["budget"]
 ```
 
 **Your Answer:**
 
 The estimated value of β1 is 1.576. This means that an one dollar increase in production budget is associated with an 1.576 dollar increase in estimated profit.
-
 *step c*
 
 ```{r}
@@ -729,7 +727,7 @@ summary(model_log)$adj.r.squared
 
 **Your Answer:**
 
-Write your formulated response here.
+The level-level model has a higher R^2 of 0.2865 than the 0.2335 of the log-log model. Also the adjusted R^2 of level-level model of 0.2855 is higher than the 0.2330 of the log-log model. However the models have different dependent variables so it doesn't give the most accurate statistics. 
 
 *step g*
 
@@ -740,7 +738,7 @@ Write your formulated response here.
 
 **Your Answer:**
 
-Write your formulated response here.
+The results give more support for Chantal than for Bob. In the level-level model, one extra dollar is associated with 1.576 higher profit on average. The coefficient is positive and that means there is no evidence from the one-sided test that higher budgets reduce profits. The log-log model also shows a positive relationship between budget and profits because a 1% increase in budget is associated with an 0.482% increase in profits. Therefore, the results do not support that the studio should focus on making cheap movies. I would advise the studio to not reduce budgets. 
 
 2
 
