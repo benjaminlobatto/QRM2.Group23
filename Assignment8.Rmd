@@ -949,3 +949,7 @@ predict(
 )
 
 ```
+
+**Your Answer:**
+
+The predicted revenue for the new film is approximately \$92.0 million. The 99% prediction interval ranges from roughly -\$179.2 million to \$363.1 million, meaning we are 99% confident that the revenue of an individual new film with these characteristics will fall within this range. The prediction is primarily driven by the budget: each additional dollar of budget is associated with approximately \$2.59 in additional revenue (p < 2e-16), whereas the thriller genre is only marginally significant (p = 0.096), and English (p = 0.91) and release_year (p = 0.62) are not significant. It should be noted that the interval is very wide and the lower bound is negative—an impossibility for revenue. This is due to the large residual standard error (approximately \$104 million), which results in high uncertainty regarding individual predictions, and the fact that a linear model does not inherently account for the fact that revenue cannot drop below zero. Furthermore, since we are predicting for 2026 while the data only extends to 2016, we are extrapolating beyond the data range, making the prediction less reliable.
