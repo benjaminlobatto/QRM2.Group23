@@ -1,11 +1,13 @@
 ---
 title: "QRM II Graded Assignment (8)"
 subtitle: "Period 1, 2026"
-author: "Fill in your group number and names here"
+author: "Group 23"
 date:  "`r format(Sys.Date(), '%d-%m-%Y')`"
+geometry: margin=0.8in
 output:
   pdf_document:
     number_sections: true
+    latex_engine: xelatex
   html_document:
     df_print: paged
 
@@ -25,7 +27,7 @@ format:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, fig.width = 6, fig.height = 3, out.width = "55%", fig.align = "center")
 ```
 
 # Introduction
@@ -666,14 +668,16 @@ coef(model_level)["budget"]
 **Your Answer:**
 
 The estimated value of β1 is 1.576. This means that an one dollar increase in production budget is associated with an 1.576 dollar increase in estimated profit.
+
 *step c*
 
 ```{r}
-pt(16.825, df = 705)
-
+t_value <- summary(model_level)$coefficients["budget", "t value"]
+t_value
+pt(t_value, df = model_level$df.residual)
 ```
 
-**Your Answer:** The estimated t-statistic is 16.285 and the one-sided p-value for the test $H_0:\beta_1\geq0$ against $H_1:\beta_1<0$ is approximately 1.00. So, we do not reject the null hypothesis.
+**Your Answer:** The estimated t-statistic is 16.825 and the one-sided p-value for the test $H_0:\beta_1\geq0$ against $H_1:\beta_1<0$ is approximately 1.00. So, we do not reject the null hypothesis.
 
 *step d*
 
@@ -727,14 +731,9 @@ summary(model_log)$adj.r.squared
 
 **Your Answer:**
 
-The level-level model has a higher R^2 of 0.2865 than the 0.2335 of the log-log model. Also the adjusted R^2 of level-level model of 0.2855 is higher than the 0.2330 of the log-log model. However the models have different dependent variables so it doesn't give the most accurate statistics. 
+The level-level model has a higher R^2 of 0.2865 than the 0.2353 of the log-log model. Also the adjusted R^2 of level-level model of 0.2855 is higher than the 0.2330 of the log-log model. However the models have different dependent variables so it doesn't give the most accurate statistics. 
 
 *step g*
-
-```{r}
-#WRITE YOUR CODE HERE
-
-```
 
 **Your Answer:**
 
@@ -799,22 +798,13 @@ f.  Estimate a model that is able to predict the revenue of this movie. Give its
 
 ```{r}
 
-library(tidyverse)
+mean_profits_month <- aggregate(profits ~ release_month, data = movies, FUN = mean)
 
-mean_profits_month <- movies %>%
-  group_by(release_month) %>%
-  summarise(
-    mean_profits = mean(profits, na.rm = TRUE)
-  )
-
-ggplot(mean_profits_month, aes(x = release_month, y = mean_profits)) +
-  geom_bar(stat = "identity") +
-  labs(
-    title = "Mean Profits by Month of Release",
-    x = "Month of Release",
-    y = "Mean Profits"
-  ) +
-  scale_x_continuous(breaks = 1:12)
+barplot(mean_profits_month$profits / 1000000,
+        names.arg = mean_profits_month$release_month,
+        main = "Mean Profits by Month of Release",
+        xlab = "Month of Release",
+        ylab = "Mean Profits (millions)")
 
 ```
 
@@ -841,7 +831,11 @@ summary(model_b)
 
 The intercept is 9.45382: the predicted log profit for a non-English movie with a budget of 1 and release month 0. Since month 0 does not exist, this has little practical meaning.
 
-Holding the other variables constant: - A 1% higher budget is associated with approximately 0.484% higher profits. - English-language movies have approximately 20.2% lower profits than non-English movies, calculated as 100 × (exp(-0.22545) − 1). This difference is not statistically significant (p = 0.557). - A one-month increase in release month is associated with approximately 1.9% higher profits. This relationship is not statistically significant (p = 0.418).
+Holding the other variables constant:
+
+- A 1% higher budget is associated with approximately 0.484% higher profits.
+- English-language movies have approximately 20.2% lower profits than non-English movies, calculated as 100 × (exp(-0.22545) − 1). This difference is not statistically significant (p = 0.557).
+- A one-month increase in release month is associated with approximately 1.9% higher profits. This relationship is not statistically significant (p = 0.418).
 
 *step c*
 
@@ -865,7 +859,7 @@ data_d <- subset(
     !is.na(english) & !is.na(release_month)
 )
 
-# Model met een flexibelere curve
+# Model with a more flexible (quadratic) curve
 model_d <- lm(
   log_profits ~ log(budget) + english +
     release_month + I(release_month^2),
@@ -874,13 +868,13 @@ model_d <- lm(
 
 summary(model_d)
 
-# Model zonder beide maandtermen
+# Model without both month terms
 model_without_month <- lm(
   log_profits ~ log(budget) + english,
   data = data_d
 )
 
-# Gezamenlijke F-toets voor beide maandtermen
+# Joint F-test for both month terms
 anova(model_without_month, model_d)
 
 ```
@@ -919,18 +913,18 @@ predictions[
 
 **Your Answer:**
 
-The model predicts the highest log profits in July, with August a close second. However, the month terms are not jointly statistically significant (p = 0.2953), so there is insufficient evidence to confidently recommend one month over another. The studio should also consider competition, holidays and marketing when choosing a release date. The model predicts log profits rather than revenue directly.
+We interpret the budget of "40,000,0000" in the assignment as \$40,000,000. The model predicts the highest log profits in July, with August a close second. However, the month terms are not jointly statistically significant (p = 0.2953), so there is insufficient evidence to confidently recommend one month over another. The studio should also consider competition, holidays and marketing when choosing a release date. The model predicts log profits rather than revenue directly.
 
 *step f*
 
 ```{r}
-# Maak indicatoren voor Engelse taal en thrillergenre
+# Create indicators for English language and thriller genre
 movies$english <- ifelse(movies$original_language == "en", 1, 0)
 movies$thriller <- as.integer(
   grepl("thriller", movies$genre, ignore.case = TRUE)
 )
 
-# Schat het model voor omzet
+# Estimate the revenue model
 model_f <- lm(
   revenue ~ budget + english + thriller + release_year,
   data = movies
@@ -938,7 +932,7 @@ model_f <- lm(
 
 summary(model_f)
 
-# Kenmerken van de nieuwe film
+# Characteristics of the new movie
 new_movie <- data.frame(
   budget = 40000000,
   english = 1,
@@ -946,7 +940,7 @@ new_movie <- data.frame(
   release_year = 2026
 )
 
-# Voorspelde omzet met een 99% voorspellingsinterval
+# Predicted revenue with a 99% prediction interval
 predict(
   model_f,
   newdata = new_movie,
