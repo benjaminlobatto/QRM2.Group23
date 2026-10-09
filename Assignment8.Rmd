@@ -667,7 +667,7 @@ coef(model_level)["budget"]
 
 **Your Answer:**
 
-The estimated value of β1 is 1.576. This means that an one dollar increase in production budget is associated with an 1.576 dollar increase in estimated profit.
+The estimated value of $\beta_1$ is 1.576. This means that an one dollar increase in production budget is associated with an 1.576 dollar increase in estimated profit.
 
 *step c*
 
@@ -714,7 +714,7 @@ coef(model_log)["log_budget"]
 
 **Your Answer:**
 
-The estimated value of β1 is 0.48224 since this is log-log model, the coefficient is interpreted as an elasticity. This means that a 1% increase means a 0.482% increase in profits on average.
+The estimated value of $\beta_1$ is 0.48224 since this is log-log model, the coefficient is interpreted as an elasticity. This means that a 1% increase means a 0.482% increase in profits on average.
 
 *step f*
 
@@ -748,35 +748,73 @@ c.  Now, have a close look at your data frame. Can you find any instances of mal
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+movies$log_budget2 <- ifelse(movies$budget > 0, log(movies$budget), NA)
 
+gender_summary <- aggregate(log_budget2 ~ first_actor_gender, data = movies,
+  FUN = function(x) c(mean = mean(x), sd = sd(x), n = length(x)))
+gender_summary <- data.frame(
+  gender = gender_summary$first_actor_gender,
+  mean   = gender_summary$log_budget2[, "mean"],
+  sd     = gender_summary$log_budget2[, "sd"],
+  n      = gender_summary$log_budget2[, "n"])
+gender_summary$se    <- gender_summary$sd / sqrt(gender_summary$n)
+gender_summary$lower <- gender_summary$mean - qt(0.975, gender_summary$n - 1) * gender_summary$se
+gender_summary$upper <- gender_summary$mean + qt(0.975, gender_summary$n - 1) * gender_summary$se
+gender_summary
+
+plot(1:2, gender_summary$mean, xlim = c(0.5, 2.5),
+     ylim = range(gender_summary$lower, gender_summary$upper),
+     xaxt = "n", pch = 19,
+     main = "Mean log(budget) by gender of first actor (95% CI)",
+     xlab = "Gender of first actor", ylab = "Mean log(budget)")
+axis(1, at = 1:2, labels = gender_summary$gender)
+arrows(1:2, gender_summary$lower, 1:2, gender_summary$upper,
+       angle = 90, code = 3, length = 0.05)
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The group with a male first actor has the highest mean log(budget): 16.73, compared with 16.35 for a female first actor. This difference of about 0.38 on the log scale means that films with a male first actor have, on average, a budget that is about exp(0.38) $\approx$ 1.46 times as large, i.e. roughly 46% higher.
+
+The two 95% confidence intervals partly overlap. The interval for the female group is also wider, because that group is smaller (n = 143 versus n = 397), which gives a larger standard error.
+
+Conclusion: in this sample, films with a male first actor have a higher mean budget, but because the intervals overlap, the plot alone does not clearly establish that the difference exists in the population. It could also be due to chance. Overlapping intervals are not a formal test, so whether the difference is significant is tested formally in 2b. Note also that this is an association, not a causal effect: factors such as genre, release year and studio may influence both the budget and the gender of the first actor.
 
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
-
+movies$first_actor_male <- ifelse(movies$first_actor_gender == "male", 1, 0)
+model_gender <- lm(log_budget2 ~ first_actor_male, data = movies)
+summary(model_gender)
+confint(model_gender)
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The regression yields log_budget2 = 16.350 + 0.381 × first_actor_male. $\beta_1 = 0.381$ is exactly the difference between the two group means in 2a (16.73 − 16.35). On average, films with a male lead actor have a budget that is approximately 46% higher (exp(0.381) $\approx$ 1.46).
+
+The difference is not significant at the 5% level (t = 1.879, df = 538, p = 0.061), and the 95% confidence interval [−0.02; 0.78] includes 0; therefore, we do not reject $H_0: \beta_1 = 0$.
+
+Conclusion: In this sample, films with a male lead actor have a higher average log(budget), but the difference is not significant, so we cannot conclude that it exists in the population. This is consistent with the partially overlapping intervals from 2a.
 
 *step c*
 
 ```{r}
-#WRITE YOUR CODE HERE
+# Lists used to search for mislabelled actors (run in the Console, they are long):
+# sort(unique(movies$first_actor[movies$first_actor_gender == "female"]))
+# sort(unique(movies$first_actor[movies$first_actor_gender == "male"]))
 
+# Examples of men labelled as female
+movies[movies$first_actor %in% c("Morgan Freeman", "Jackie Chan", "Jamie Foxx",
+                                 "Taylor Lautner", "Leslie Nielsen", "Cuba Gooding"),
+       c("title", "first_actor", "first_actor_gender")]
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The `first_actor_gender` variable contains incorrect labels: Morgan Freeman, Jackie Chan, Jamie Foxx, Taylor Lautner, Leslie Nielsen, and Cuba Gooding are classified as “female,” even though they are men. Many of these first names are used by both genders (Morgan, Taylor, Jamie, Leslie), suggesting that the gender was likely determined automatically based on the first name.
+
+This affects $\beta_1$. These men are incorrectly included in the “female” group, causing the average log(budget) of that group to be conflated with that of the men. Consequently, the two groups appear more similar, reducing the observed difference. Therefore, $\beta_1 = 0.381$ is likely an underestimate of the true difference, assuming the errors primarily involve men being misclassified as “female.”
 
 # Week 5
 
@@ -846,9 +884,9 @@ summary(model_b)$coefficients["release_month", ]
 
 **Your Answer:**
 
-We test H₀: β_release_month = 0 against H₁: β_release_month ≠ 0 using a two-sided t-test. The test statistic is 0.811 and the p-value is 0.418.
+We test $H_0: \beta_{\text{month}} = 0$ against $H_1: \beta_{\text{month}} \neq 0$ using a two-sided t-test. The test statistic is 0.811 and the p-value is 0.418.
 
-Since p \> 0.05, we do not reject H₀. There is insufficient evidence of a linear relationship between release month and log profits, controlling for log budget and language.
+Since p \> 0.05, we do not reject $H_0$. There is insufficient evidence of a linear relationship between release month and log profits, controlling for log budget and language.
 
 *step d*
 
@@ -887,9 +925,9 @@ The estimated model is:
 
 Predicted log profits = 9.151123 + 0.482036 × log(budget) − 0.188268 × english + 0.145982 × release_month − 0.009968 × release_month².
 
-We test H₀: both month coefficients are zero against H₁: at least one is non-zero.
+We test $H_0$: both month coefficients are zero against $H_1$: at least one is non-zero.
 
-The joint F-test gives F(2, 330) = 1.2244 and p = 0.2953. Since p \> 0.05, we do not reject H₀. There is insufficient evidence that release month is associated with log profits in this quadratic model, controlling for budget and language.
+The joint F-test gives F(2, 330) = 1.2244 and p = 0.2953. Since p \> 0.05, we do not reject $H_0$. There is insufficient evidence that release month is associated with log profits in this quadratic model, controlling for budget and language.
 
 *step e*
 
